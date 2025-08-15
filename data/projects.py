@@ -181,13 +181,13 @@ SKILLS = {
 
 # Personal information - CUSTOMIZE THIS SECTION
 PERSONAL_INFO = {
-    'name': 'Fisayo Adedoy!n',
+    'name': 'Fisayo Adedoyin',
     'title': 'Web Developer & Programming Enthusiast',
     'email': 'Adedoyinfisayo305@gmail.com',
     'phone': '+(234) 8078-9240-58',
-    'location': 'Your City, Country',
+    'location': 'Lagos, Nigeria',
     'linkedin': 'https://linkedin.com/in/yourprofile',
-    'github': 'https://github.com/yourusername',
+    'github': 'https://github.com/fisidinho25',
     'bio': '''Welcome to my portfolio! I'm a passionate web developer with a love for creating 
     clean, functional, and user-friendly applications. Through my journey in programming, 
     I've built these 15 projects that showcase my growth and skills in web development. 
