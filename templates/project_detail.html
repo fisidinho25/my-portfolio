@@ -1,0 +1,218 @@
+{% extends "base.html" %}
+
+{% block title %}{{ project.title }} - {{ personal_info.name }} Portfolio{% endblock %}
+
+{% block content %}
+<!-- Project Header -->
+<section class="py-5 mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url_for('projects') }}">Projects</a></li>
+                        <li class="breadcrumb-item active">{{ project.title }}</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <div class="d-flex align-items-center mb-3">
+                    <h1 class="display-5 fw-bold me-3">{{ project.title }}</h1>
+                    <span class="badge bg-primary">{{ project.category }}</span>
+                </div>
+                <p class="lead">{{ project.short_description }}</p>
+                
+                <div class="d-flex flex-wrap gap-3 mb-4">
+                    <a href="{{ project.github_url }}" class="btn btn-dark" target="_blank">
+                        <i class="fab fa-github me-2"></i>View Code
+                    </a>
+                    <a href="{{ project.live_demo_url }}" class="btn btn-primary" target="_blank">
+                        <i class="fas fa-external-link-alt me-2"></i>Live Demo
+                    </a>
+                    <a href="{{ url_for('projects') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Projects
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-4 text-center">
+                <img src="{{ project.image_url }}" alt="{{ project.title }}" class="img-fluid rounded shadow">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Project Details -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title mb-4">Project Overview</h3>
+                        <p class="card-text">{{ project.long_description }}</p>
+                        
+                        <h4 class="mt-4 mb-3">Key Features</h4>
+                        <ul class="list-unstyled">
+                            {% if project.title == 'Personal Website' %}
+                            <li><i class="fas fa-check text-success me-2"></i>Responsive design that works on all devices</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Smooth scrolling navigation</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Contact form with validation</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Clean, modern design</li>
+                            {% elif project.title == 'Todo List App' %}
+                            <li><i class="fas fa-check text-success me-2"></i>Add, edit, and delete tasks</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Mark tasks as complete</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Filter tasks by status</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Local storage persistence</li>
+                            {% elif project.title == 'Weather App' %}
+                            <li><i class="fas fa-check text-success me-2"></i>Current weather conditions</li>
+                            <li><i class="fas fa-check text-success me-2"></i>5-day weather forecast</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Search by city name</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Geolocation support</li>
+                            {% else %}
+                            <li><i class="fas fa-check text-success me-2"></i>Clean, intuitive user interface</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Responsive design for all devices</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Interactive functionality</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Modern web technologies</li>
+                            {% endif %}
+                        </ul>
+                        
+                        <h4 class="mt-4 mb-3">What I Learned</h4>
+                        <p>
+                            {% if 'JavaScript' in project.technologies %}
+                            This project helped me improve my JavaScript skills, particularly in DOM manipulation and event handling.
+                            {% endif %}
+                            {% if 'API' in project.technologies|join(' ') %}
+                            I gained valuable experience working with external APIs and handling asynchronous data.
+                            {% endif %}
+                            {% if 'CSS' in project.technologies|join(' ') %}
+                            I enhanced my CSS skills, focusing on responsive design and modern layout techniques.
+                            {% endif %}
+                            The project challenged me to think about user experience and code organization, leading to cleaner, more maintainable code.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <!-- Technologies Used -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="fas fa-code me-2"></i>Technologies Used
+                        </h5>
+                        <div class="tech-stack">
+                            {% for tech in project.technologies %}
+                            <span class="badge bg-primary me-2 mb-2">{{ tech }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project Info -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="fas fa-info-circle me-2"></i>Project Information
+                        </h5>
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-2">
+                                <strong>Category:</strong> {{ project.category }}
+                            </li>
+                            <li class="mb-2">
+                                <strong>Status:</strong> <span class="badge bg-success">Completed</span>
+                            </li>
+                            <li class="mb-2">
+                                <strong>Type:</strong> Beginner Project
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Share Project -->
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="fas fa-share-alt me-2"></i>Share This Project
+                        </h5>
+                        <div class="d-flex gap-2">
+                            <a href="https://twitter.com/intent/tweet?text=Check out this project: {{ project.title }}&url={{ request.url }}" 
+                               class="btn btn-outline-primary btn-sm" target="_blank">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.url }}" 
+                               class="btn btn-outline-primary btn-sm" target="_blank">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <button class="btn btn-outline-primary btn-sm" onclick="copyToClipboard()">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Related Projects -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h3 class="text-center mb-5">More Projects</h3>
+                <div class="row">
+                    {% for related_project in projects[:3] %}
+                    {% if related_project.id != project.id %}
+                    <div class="col-lg-4 mb-4">
+                        <div class="card project-card h-100 shadow-sm">
+                            <img src="{{ related_project.image_url }}" class="card-img-top project-img" alt="{{ related_project.title }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ related_project.title }}</h5>
+                                <p class="card-text">{{ related_project.short_description }}</p>
+                                <a href="{{ url_for('project_detail', project_id=related_project.id) }}" class="btn btn-outline-primary">
+                                    View Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                
+                <div class="text-center mt-4">
+                    <a href="{{ url_for('projects') }}" class="btn btn-primary">
+                        View All Projects <i class="fas fa-arrow-right ms-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+function copyToClipboard() {
+    navigator.clipboard.writeText(window.location.href).then(function() {
+        // Create a temporary tooltip or alert
+        const btn = event.target.closest('button');
+        const originalHTML = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-check"></i>';
+        btn.classList.add('btn-success');
+        btn.classList.remove('btn-outline-primary');
+        
+        setTimeout(() => {
+            btn.innerHTML = originalHTML;
+            btn.classList.remove('btn-success');
+            btn.classList.add('btn-outline-primary');
+        }, 2000);
+    }).catch(function(err) {
+        console.error('Error copying to clipboard: ', err);
+    });
+}
+</script>
+{% endblock %}

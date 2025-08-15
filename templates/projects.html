@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% block title %}Projects - {{ personal_info.name }} Portfolio{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="py-5 mt-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="display-4 fw-bold mb-4">My Projects</h1>
+                <p class="lead">
+                    A collection of {{ projects|length }} beginner-friendly projects that showcase my journey in web development.
+                    Each project represents a milestone in my learning process and demonstrates different skills and technologies.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Filter Section -->
+<section class="py-4 border-bottom">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-center flex-wrap gap-2" id="project-filters">
+                    <button class="btn btn-outline-primary active" data-filter="all">All Projects</button>
+                    <button class="btn btn-outline-primary" data-filter="Web Development">Web Development</button>
+                    <button class="btn btn-outline-primary" data-filter="Web Application">Web Apps</button>
+                    <button class="btn btn-outline-primary" data-filter="Game Development">Games</button>
+                    <button class="btn btn-outline-primary" data-filter="Utility Application">Utilities</button>
+                    <button class="btn btn-outline-primary" data-filter="API Integration">API Projects</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Projects Grid -->
+<section class="py-5">
+    <div class="container">
+        <div class="row" id="projects-grid">
+            {% for project in projects %}
+            <div class="col-lg-4 col-md-6 mb-4 project-item" data-category="{{ project.category }}">
+                <div class="card project-card h-100 shadow-sm">
+                    <div class="project-image-container">
+                        <img src="{{ project.image_url }}" class="card-img-top project-img" alt="{{ project.title }}">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="{{ project.github_url }}" class="btn btn-light btn-sm me-2" target="_blank" title="View Code">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                                <a href="{{ project.live_demo_url }}" class="btn btn-light btn-sm" target="_blank" title="Live Demo">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h5 class="card-title mb-0">{{ project.title }}</h5>
+                            <span class="badge bg-secondary">{{ project.category }}</span>
+                        </div>
+                        <p class="card-text flex-grow-1">{{ project.short_description }}</p>
+                        <div class="mt-auto">
+                            <div class="mb-3">
+                                {% for tech in project.technologies %}
+                                <span class="badge bg-light text-dark me-1 mb-1">{{ tech }}</span>
+                                {% endfor %}
+                            </div>
+                            <a href="{{ url_for('project_detail', project_id=project.id) }}" class="btn btn-primary w-100">
+                                View Details <i class="fas fa-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- No results message (hidden by default) -->
+        <div id="no-results" class="text-center py-5" style="display: none;">
+            <i class="fas fa-search fa-3x text-muted mb-3"></i>
+            <h4>No projects found</h4>
+            <p class="text-muted">Try selecting a different category filter.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Technologies Overview -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="display-6 fw-bold">Technologies Used</h2>
+                <p class="lead">Technologies and tools I've worked with across these projects</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="tech-cloud text-center">
+                    {% set all_technologies = [] %}
+                    {% for project in projects %}
+                        {% for tech in project.technologies %}
+                            {% if tech not in all_technologies %}
+                                {% set _ = all_technologies.append(tech) %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                    
+                    {% for tech in all_technologies %}
+                    <span class="badge bg-primary me-2 mb-2 tech-badge">{{ tech }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Project filtering functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const filterButtons = document.querySelectorAll('#project-filters button');
+    const projectItems = document.querySelectorAll('.project-item');
+    const noResults = document.getElementById('no-results');
+    
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const filter = this.getAttribute('data-filter');
+            
+            // Update active button
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Filter projects
+            let visibleCount = 0;
+            projectItems.forEach(item => {
+                const category = item.getAttribute('data-category');
+                if (filter === 'all' || category === filter) {
+                    item.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+            
+            // Show/hide no results message
+            if (visibleCount === 0) {
+                noResults.style.display = 'block';
+            } else {
+                noResults.style.display = 'none';
+            }
+        });
+    });
+});
+</script>
+{% endblock %}
