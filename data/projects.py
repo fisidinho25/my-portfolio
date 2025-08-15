@@ -186,7 +186,7 @@ PERSONAL_INFO = {
     'email': 'Adedoyinfisayo305@gmail.com',
     'phone': '+(234) 8078-9240-58',
     'location': 'Lagos, Nigeria',
-    'linkedin': 'https://linkedin.com/in/yourprofile',
+    'linkedin': 'https://www.linkedin.com/in/fisayo-adedoyin-78086197/',
     'github': 'https://github.com/fisidinho25',
     'bio': '''Welcome to my portfolio! I'm a passionate web developer with a love for creating 
     clean, functional, and user-friendly applications. Through my journey in programming, 
