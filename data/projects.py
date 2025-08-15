@@ -18,12 +18,12 @@ PROJECTS = [
     {
         'id': 2,
         'title': 'Todo List App',
-        'short_description': 'A simple todo list application with local storage functionality.',
-        'long_description': 'An interactive todo list application that allows users to add, edit, delete, and mark tasks as complete. The app uses local storage to persist data between browser sessions. Features include task filtering (all, active, completed), drag-and-drop reordering, and a clean, intuitive interface. This project taught me about event handling, local storage APIs, and creating dynamic user interfaces.',
-        'technologies': ['HTML', 'CSS', 'JavaScript', 'Local Storage'],
+        'short_description': 'A Flask-powered todo list application with database persistence.',
+        'long_description': 'A full-stack todo list application built with Flask and SQLAlchemy. Users can add, complete, and delete tasks with data stored in a SQLite database. Features include real-time status updates, task completion tracking, creation timestamps, and flash messages for user feedback. The app demonstrates CRUD operations, database modeling, and modern web design with Bootstrap 5. This project taught me about backend development, database relationships, and creating interactive web applications.',
+        'technologies': ['Flask', 'Python', 'SQLAlchemy', 'SQLite', 'HTML', 'CSS', 'Bootstrap'],
         'image_url': 'https://pixabay.com/get/g1ddc0a08f9fc38c3a539213ce01bcadaee733e7145c91450ae2123cf3d345b1cac44bc07edf56c4bddda79ee500da89bcfbc235bb79644bebcc423e99fe9e634_1280.jpg',
         'github_url': '#',
-        'live_demo_url': '#',
+        'live_demo_url': '/todos',
         'category': 'Web Application'
     },
     {

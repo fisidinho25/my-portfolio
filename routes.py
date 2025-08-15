@@ -1,6 +1,7 @@
 from flask import render_template, request, flash, redirect, url_for
 from app import app, db
 from models import ContactSubmission
+from models import Todo
 from data.projects import PROJECTS, PERSONAL_INFO, SKILLS
 import logging
 @app.route('/')
@@ -53,5 +54,56 @@ def not_found_error(error):
     return render_template('base.html', personal_info=PERSONAL_INFO), 404
 @app.errorhandler(500)
 def internal_error(error):
+    db.session.rollback()
+    return render_template('base.html', personal_info=PERSONAL_INFO), 500
+
+@app.route('/todos')
+def todos():
+    """Todo list page"""
+    todos = Todo.query.all()
+    return render_template('todos.html', todos=todos, personal_info=PERSONAL_INFO)
+
+@app.route('/add_todo', methods=['POST'])
+def add_todo():
+    """Add a new todo"""
+    title = request.form.get('title', '').strip()
+    description = request.form.get('description', '').strip()
+    
+    if title:
+        todo = Todo(title=title, description=description)
+        db.session.add(todo)
+        db.session.commit()
+        flash('Todo added successfully!', 'success')
+    else:
+        flash('Title is required!', 'error')
+    
+    return redirect(url_for('todos'))
+
+@app.route('/complete_todo/<int:todo_id>')
+def complete_todo(todo_id):
+    """Toggle todo completion status"""
+    todo = Todo.query.get_or_404(todo_id)
+    todo.completed = not todo.completed
+    db.session.commit()
+    flash(f'Todo {"completed" if todo.completed else "marked as active"}!', 'success')
+    return redirect(url_for('todos'))
+
+@app.route('/delete_todo/<int:todo_id>')
+def delete_todo(todo_id):
+    """Delete a todo"""
+    todo = Todo.query.get_or_404(todo_id)
+    db.session.delete(todo)
+    db.session.commit()
+    flash('Todo deleted!', 'info')
+    return redirect(url_for('todos'))
+
+@app.errorhandler(404)
+def not_found_error(error):
+    """Custom 404 error page"""
+    return render_template('base.html', personal_info=PERSONAL_INFO), 404
+
+@app.errorhandler(500)
+def internal_error(error):
+    """Custom 500 error page"""
     db.session.rollback()
     return render_template('base.html', personal_info=PERSONAL_INFO), 500
