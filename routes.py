@@ -2,12 +2,15 @@ from flask import render_template, request, flash, redirect, url_for
 from app import app, db
 from models import ContactSubmission
 from models import Todo
+from models import Rating
 from data.projects import PROJECTS, PERSONAL_INFO, SKILLS
 import logging
 @app.route('/')
 def index():
     featured_projects = PROJECTS[:6]
-    return render_template('index.html', featured_projects=featured_projects, personal_info=PERSONAL_INFO, skills=SKILLS)
+      # Query all ratings and order them by newest first (assuming 'id' is chronological)
+    all_ratings = Rating.query.order_by(Rating.id.desc()).all()
+    return render_template('index.html', featured_projects=featured_projects, personal_info=PERSONAL_INFO, skills=SKILLS, ratings=all_ratings)
 @app.route('/projects')
 def projects():
     return render_template('projects.html', projects=PROJECTS, personal_info=PERSONAL_INFO)
@@ -107,3 +110,26 @@ def internal_error(error):
     """Custom 500 error page"""
     db.session.rollback()
     return render_template('base.html', personal_info=PERSONAL_INFO), 500
+
+@app.route('/rate', methods=['POST'])
+def rate():
+    stars = int(request.form.get('stars', 0))
+    feedback = request.form.get('feedback', '')
+
+    if 1 <= stars <= 5:
+        rating = Rating(stars=stars, feedback=feedback)
+        db.session.add(rating)
+        db.session.commit()
+        flash("Thanks for your feedback!", "success")
+    else:
+        flash("Invalid rating.", "danger")
+
+    return redirect(url_for('index'))
+
+# Add this code block to your routes.py file
+
+@app.route('/ratings')
+def show_ratings():
+    """Displays all submitted ratings and feedback."""
+    all_ratings = Rating.query.all()
+    return render_template('ratings.html', ratings=all_ratings, personal_info=PERSONAL_INFO)

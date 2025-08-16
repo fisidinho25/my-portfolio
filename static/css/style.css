@@ -317,6 +317,30 @@ h1, h2, h3, h4, h5, h6 {
     text-align: center;
 }
 
+/* Star Rating Styles */
+.star-rating {
+    direction: rtl; /* Right-to-left so stars fill leftwards */
+    display: inline-flex;
+    gap: 4px;
+}
+.star-rating input {
+    display: none; /* Hide the radio buttons */
+}
+.star-rating label {
+    font-size: 1.5rem;
+    color: #ddd;
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+}
+.star-rating input:checked ~ label {
+    color: gold;
+}
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color: gold;
+}
+
+
 /* Footer */
 footer {
     margin-top: auto;
